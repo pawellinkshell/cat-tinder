@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>pl.pawellinkshell</groupId>
+	<artifactId>cat-tinder</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+	</dependencies>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.3.RELEASE</version>
+		<relativePath/>
+	</parent>
+
+	<name>${project.artifactId}</name>
+	<description>Yet another tinder based app for cats</description>
+	<inceptionYear>2018</inceptionYear>
+	<url>https://github.com/pawellinkshell/${project.artifactId}</url>
+
+	<developers>
+		<developer>
+			<id>pawel.linkshell</id>
+			<name>Pawel Linkshell</name>
+			<email>pawel.linkshell@gmail.com</email>
+			<roles>
+				<role>Author</role>
+			</roles>
+			<organization>https://github.com/pawellinkshell</organization>
+			<organizationUrl>https://github.com/pawellinkshell</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<url>https://github.com/pawellinkshell/${project.artifactId}</url>
+		<connection>scm:git:https://github.com/pawellinkshell/${project.artifactId}.git</connection>
+		<developerConnection>scm:git:https://github.com/pawellinkshell/${project.artifactId}.git</developerConnection>
+		<tag></tag>
+	</scm>
+
+	<properties>
+		<!--For testing purposes-->
+		<assertj-core.version>RELEASE</assertj-core.version>
+		<assertj-guava.version>RELEASE</assertj-guava.version>
+		<assertj-joda-time.version>RELEASE</assertj-joda-time.version>
+		<junit.version>RELEASE</junit.version>
+		<hamcrest.version>RELEASE</hamcrest.version>
+		<mockito.version>RELEASE</mockito.version>
+
+		<!--For better date purposes -->
+		<joda-time.version>RELEASE</joda-time.version>
+
+		<!--Common utils-->
+		<guava.version>RELEASE</guava.version>
+		<lombok.version>1.18.2</lombok.version>
+
+		<!--For building purposes-->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.dependency.version>3.0.2</maven.dependency.version>
+		<maven.compiler.version>3.7.0</maven.compiler.version>
+		<error.prone.version>RELEASE</error.prone.version>
+		<java.version>1.10</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+	</properties>
+
+	<modules>
+		<module>application</module>
+		<module>modules/data-layer-module</module>
+		<module>modules/core-module</module>
+		<module>modules/frontend-module</module>
+	</modules>
+
+	<!-- Centrally manage all versions for child pom's & transitive dependency versions -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<type>pom</type>
+				<version>2.0.3.RELEASE</version>
+				<scope>import</scope>
+			</dependency>
+
+			<!--Commons-->
+			<dependency>
+				<!--https://github.com/google/guava-->
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!--https://github.com/twitter/commons/tree/master/src/java/com/twitter/common-->
+			<!--https://github.com/twitter/commons/blob/master/src/java/com/twitter/common/styleguide.md-->
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<!--How artifact will be named-->
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<plugins>
+
+			<!-- Static code analysis using
+			  `error-prone` from Google
+			  `NullAway` from uber
+			 To analyze:                mvn clean install
+			 To see the result:         check console mvn build
+      		-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<compilerId>javac-with-errorprone</compilerId>
+					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					<!--Dependency for maven-compiler-plugin is not upgraded for JDK 10-->
+					<source>1.8</source>
+					<target>1.8</target>
+					<showWarnings>true</showWarnings>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.uber.nullaway</groupId>
+							<artifactId>nullaway</artifactId>
+							<version>0.5.0</version>
+						</path>
+					</annotationProcessorPaths>
+					<compilerArgs>
+						<arg>-Xep:NullAway:ERROR</arg>
+						<arg>-XepOpt:NullAway:AnnotatedPackages=com.uber</arg>
+					</compilerArgs>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-compiler-javac-errorprone</artifactId>
+						<version>2.8</version>
+					</dependency>
+					<!-- override plexus-compiler-javac-errorprone's dependency on
+                         Error Prone with the latest version -->
+					<dependency>
+						<groupId>com.google.errorprone</groupId>
+						<artifactId>error_prone_core</artifactId>
+						<version>${error.prone.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<!-- Static code analysis using
+				Codecov
+			   To analyze:                mvn cobertura:cobertura
+			   To see the result:         check Travis-CI build
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+					<check />
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven.dependency.version}</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<additionalProperties>
+								<encoding.source>${project.build.sourceEncoding}</encoding.source>
+								<encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+								<java.source>${maven.compiler.source}</java.source>
+								<java.target>${maven.compiler.target}</java.target>
+							</additionalProperties>
+						</configuration>
+					</execution>
+					<!-- TODO For Heroku fit for Spring Boot app-->
+					<!--To build:    mvn clean install-->
+					<!--To run:      java -jar target/dependency/webapp-runner.jar target/*.war-->
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.jsimone</groupId>
+									<artifactId>webapp-runner</artifactId>
+									<version>8.5.27.0</version>
+									<destFileName>webapp-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.github.danielflower.mavenplugins</groupId>
+				<artifactId>multi-module-maven-release-plugin</artifactId>
+				<version>2.2.0</version>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<!--mvn clean install sonar:sonar-->
+			<id>sonar</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<sonar.organization>pawellinkshell-github</sonar.organization>
+				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+				<!--sonarcloud token-->
+				<sonar.login>64e0eb72fb66b382155d4dcca16fb7a5e71b43a7</sonar.login>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>

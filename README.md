@@ -54,33 +54,58 @@ TODO(Pawel): add `devDependencies` badge
 Few sentences how to start work with your code on local machine
 
 ### Requirements
+Currently nothing much more
 
 ### Installation
 
 OS X & Linux:
-TODO
 ```sh
-npm install my-crazy-module --save
+./mvnw install && ./mvnw spring-boot:run -pl application
 ```
 
 Windows:
-
 ```sh
-edit autoexec.bat
+mvnw install && mvnw spring-boot:run -pl application
 ```
 
 ## Usage example
+TODO
 
 A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
 _For more examples and usage, please refer to the [Wiki][wiki]._
 
 ## Development setup
 
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
+For OS X & Linux please use ```./mvnw``` instead of ```mvnw``` 
 
+Clean:
 ```sh
-make install
-npm test
+mvnw clean
+```
+
+Build (with tests):
+```sh
+mvnw install
+```
+
+Build (without tests):
+```sh
+mvnw install -DskipTests
+```
+
+Tests:
+```sh
+mvnw test
+```
+
+Run:
+```sh
+mvnw spring-boot:run -pl application
+```
+
+Debug
+```sh
+mvnw spring-boot:run -pl application -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
 ```
 
 ## Release History
@@ -102,7 +127,7 @@ Do you see bug or issue? Or maybe you want to improve this project?
 ## Acknowledgments
 TODO
 * [Spring Boot](https://spring.io/guides/gs/spring-boot/)
-* [Chocolatey](https://chocolatey.org/)
+* [Maven](https://maven.apache.org/)
 
 <!-- Markdown link & img dfn's -->
 <!-- Project info -->
