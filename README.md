@@ -54,7 +54,10 @@ TODO(Pawel): add `devDependencies` badge
 Few sentences how to start work with your code on local machine
 
 ### Requirements
-Currently nothing much more
+Node.js:
+
+* To speed up development build locally please instal the official `Node.js` version 
+  that is supported is 8.9 and greater (get from Angular CLI v6); Not necessery for production build.
 
 ### Installation
 
@@ -72,7 +75,7 @@ mvnw install && mvnw spring-boot:run -pl application
 TODO
 
 A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
-_For more examples and usage, please refer to the [Wiki][wiki]._
+_For more examples and usage, please refer to the [Wiki][wiki].
 
 ## Development setup
 
@@ -98,9 +101,14 @@ Tests:
 mvnw test
 ```
 
-Run:
+Run (development):
 ```sh
 mvnw spring-boot:run -pl application
+```
+
+Run (production):
+```sh
+java -jar application/target/cat-tinder-application-0.1.0-SNAPSHOT.jar
 ```
 
 Debug
