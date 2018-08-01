@@ -1,0 +1,22 @@
+@import "constants";
+nav{
+  a {
+    padding: 5px 10px;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+    background-color: #eee;
+    border-radius: 4px;
+
+    &:visited, &:link {
+      color: $color-lynch;
+    }
+    &:hover {
+      color: $color-cerulean;
+      background-color: $color-geyser;
+    }
+    &.active {
+      color: $color-cerulean;
+    }
+  }
+}

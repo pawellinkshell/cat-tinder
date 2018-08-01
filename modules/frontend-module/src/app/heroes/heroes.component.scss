@@ -3,6 +3,7 @@ $color-white:       white;
 $color-gallery:     #EEE;
 $color-ziggurat:    #BBD8DC;
 $color-lynch:       #607D8B;
+$color-gray:        #888;
 
 .selected {
   background-color: $color-geyser !important;
@@ -25,18 +26,19 @@ $color-lynch:       #607D8B;
     height: 1.6em;
     border-radius: 4px;
 
-    .selected{
-      &:hover {
-        background-color: $color-ziggurat !important;
-        color: $color-white;
-      }
-    }
-
     &:hover {
       color: $color-lynch;
       background-color: #DDD;
       left: .1em;
     }
+  }
+
+  a {
+    color: $color-gray;
+    text-decoration: none;
+    position: relative;
+    display: block;
+    width: 250px;
   }
 
   .text {
@@ -55,6 +57,7 @@ $color-lynch:       #607D8B;
     left: -1px;
     top: -4px;
     height: 1.8em;
+    min-width: 16px;
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
   }
